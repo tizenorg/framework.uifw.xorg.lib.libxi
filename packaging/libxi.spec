@@ -1,8 +1,8 @@
 
-Name:       libXi
+Name:       libxi
 Summary:    X.Org X11 libXi runtime library
 Version:    1.4.0
-Release:    1
+Release:    2.6
 Group:      System/Libraries
 License:    MIT
 URL:        http://www.x.org/
@@ -35,10 +35,9 @@ Description: %{summary}
 
 
 %build
-
-%reconfigure \
-	CFLAGS="-D_F_ENABLE_XI2_SENDEVENT_" \
-	LDFLAGS="-Wl,--hash-style=both -Wl,--as-needed"
+export LDFLAGS+=" -Wl,--hash-style=both -Wl,--as-needed"
+export CFLAGS+=" -D_F_ENABLE_XI2_SENDEVENT_"
+%reconfigure 
 
 # Call make instruction with smp support
 make %{?jobs:-j%jobs}
