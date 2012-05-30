@@ -7,6 +7,7 @@ Group:      System/Libraries
 License:    MIT
 URL:        http://www.x.org/
 Source0:    http://xorg.freedesktop.org/releases/individual/lib/%{name}-%{version}.tar.gz
+Source1001: packaging/libxi.manifest 
 Requires(post):  /sbin/ldconfig
 Requires(postun):  /sbin/ldconfig
 BuildRequires:  pkgconfig(xorg-macros)
@@ -35,6 +36,7 @@ Description: %{summary}
 
 
 %build
+cp %{SOURCE1001} .
 export LDFLAGS+=" -Wl,--hash-style=both -Wl,--as-needed"
 export CFLAGS+=" -D_F_ENABLE_XI2_SENDEVENT_"
 %reconfigure 
@@ -59,6 +61,7 @@ rm -rf %{buildroot}
 
 
 %files
+%manifest libxi.manifest
 %defattr(-,root,root,-)
 %{_libdir}/libXi.so.6
 %{_libdir}/libXi.so.6.1.0
@@ -66,6 +69,7 @@ rm -rf %{buildroot}
 
 
 %files devel
+%manifest libxi.manifest
 %defattr(-,root,root,-)
 %{_includedir}/X11/extensions/XInput.h
 %{_includedir}/X11/extensions/XInput2.h
