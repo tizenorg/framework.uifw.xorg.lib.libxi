@@ -37,7 +37,7 @@ else
 endif
 
 #configure: $(STAMP_DIR)/patch
-configure: 
+configure:
 	autoreconf -vfi
 
 obj-$(DEB_BUILD_GNU_TYPE)/config.status: configure
@@ -46,7 +46,7 @@ obj-$(DEB_BUILD_GNU_TYPE)/config.status: configure
 	../configure --prefix=/usr --mandir=\$${prefix}/share/man \
 	             --infodir=\$${prefix}/share/info $(confflags) \
 	             CFLAGS="$(CFLAGS)" \
-	             LDFLAGS="$(LDFLAGS)" 
+	             LDFLAGS="$(LDFLAGS)"
 
 
 build: build-stamp

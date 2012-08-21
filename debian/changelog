@@ -1,6 +1,6 @@
 libxi (2:1.4.0-1slp2) unstable; urgency=low
 
-  * [X11R7.6] upgrade package 
+  * [X11R7.6] upgrade package
   * Git: 165.213.180.234:slp/pkgs/xorg/lib/libxi
   * Tag: libxi_1.4.0-1slp2
 
