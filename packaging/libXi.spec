@@ -4,7 +4,7 @@
 
 Summary: X.Org X11 libXi runtime library
 Name: libXi
-Version: 1.6.1
+Version: 1.6.2
 Release: 1
 License: MIT
 Group: System Environment/Libraries
@@ -29,7 +29,7 @@ X.Org X11 libXi runtime library
 %package devel
 Summary: X.Org X11 libXi development package
 Group: Development/Libraries
-Provides: libxi-devel 
+Provides: libxi-devel
 Requires: %{name} = %{version}-%{release}
 # required by xi.pc
 Requires: pkgconfig(xorg-macros)
@@ -57,7 +57,8 @@ make %{?jobs:-j%jobs}
 
 %install
 rm -rf $RPM_BUILD_ROOT
-
+mkdir -p %{buildroot}/usr/share/license
+cp -af COPYING %{buildroot}/usr/share/license/%{name}
 make install DESTDIR=$RPM_BUILD_ROOT
 
 # We intentionally don't ship *.la files
@@ -73,6 +74,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(-,root,root,-)
+/usr/share/license/%{name}
 %doc COPYING
 %{_libdir}/libXi.so.6
 %{_libdir}/libXi.so.6.1.0

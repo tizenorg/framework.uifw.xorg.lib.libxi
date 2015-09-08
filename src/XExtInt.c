@@ -153,6 +153,9 @@ wireToPropertyEvent(xXIPropertyEvent *in, XGenericEventCookie *cookie);
 static int
 wireToTouchOwnershipEvent(xXITouchOwnershipEvent *in,
                           XGenericEventCookie *cookie);
+static int
+wireToTouchCancelEvent(xXITouchCancelEvent *in,
+                          XGenericEventCookie *cookie);
 
 static /* const */ XEvent emptyevent;
 
@@ -1011,6 +1014,16 @@ XInputWireToCookie(
                 break;
             }
             return ENQUEUE_EVENT;
+        case XI_TouchCancel:
+            *cookie = *(XGenericEventCookie*)save;
+            if (!wireToTouchCancelEvent((xXITouchCancelEvent*)event,
+                                           cookie))
+            {
+                printf("XInputWireToCookie: CONVERSION FAILURE!  evtype=%d\n",
+                        ge->evtype);
+                break;
+            }
+            return ENQUEUE_EVENT;
 
         case XI_RawKeyPress:
         case XI_RawKeyRelease:
@@ -1398,6 +1411,22 @@ copyTouchOwnershipEvent(XGenericEventCookie *cookie_in,
 }
 
 static Bool
+copyTouchCancelEvent(XGenericEventCookie *cookie_in,
+                        XGenericEventCookie *cookie_out)
+{
+    XITouchCancelEvent *in, *out;
+
+    in = cookie_in->data;
+
+    out = cookie_out->data = malloc(sizeof(XITouchCancelEvent));
+    if (!out)
+        return False;
+
+    *out = *in;
+    return True;
+}
+
+static Bool
 copyRawEvent(XGenericEventCookie *cookie_in,
              XGenericEventCookie *cookie_out)
 {
@@ -1478,6 +1507,9 @@ XInputCopyCookie(Display *dpy, XGenericEventCookie *in, XGenericEventCookie *out
             break;
         case XI_TouchOwnership:
             ret = copyTouchOwnershipEvent(in, out);
+            break;
+        case XI_TouchCancel:
+            ret = copyTouchCancelEvent(in, out);
             break;
         case XI_RawKeyPress:
         case XI_RawKeyRelease:
@@ -1978,6 +2010,31 @@ wireToTouchOwnershipEvent(xXITouchOwnershipEvent *in,
     out->deviceid       = in->deviceid;
     out->sourceid       = in->sourceid;
     out->touchid        = in->touchid;
+    out->root           = in->root;
+    out->event          = in->event;
+    out->child          = in->child;
+    out->flags          = in->flags;
+
+    return 1;
+}
+
+static int
+wireToTouchCancelEvent(xXITouchCancelEvent *in,
+                          XGenericEventCookie *cookie)
+{
+    XITouchCancelEvent *out = malloc(sizeof(XITouchCancelEvent));
+
+    cookie->data = out;
+
+    out->type           = in->type;
+    out->serial         = in->sequenceNumber;
+    out->display        = cookie->display;
+    out->extension      = in->extension;
+    out->evtype         = in->evtype;
+    out->send_event     = ((in->type & 0x80) != 0);
+    out->time           = in->time;
+    out->deviceid       = in->deviceid;
+    out->sourceid       = in->sourceid;
     out->root           = in->root;
     out->event          = in->event;
     out->child          = in->child;
