@@ -100,8 +100,7 @@ XGrabDevice(
     event_count <<= 2;
     Data32(dpy, (long *)event_list, event_count);
 
-    if (_XReply(dpy, (xReply *) & rep, 0, xTrue) == 0)
-	rep.status = GrabSuccess;
+    (void)_XReply(dpy, (xReply *) & rep, 0, xTrue);
     UnlockDisplay(dpy);
     SyncHandle();
     return (rep.status);

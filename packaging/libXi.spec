@@ -4,7 +4,7 @@
 
 Summary: X.Org X11 libXi runtime library
 Name: libXi
-Version: 1.6.2
+Version: 1.7.3
 Release: 1
 License: MIT
 Group: System Environment/Libraries
@@ -17,6 +17,7 @@ BuildRequires: autoconf automake libtool
 BuildRequires: xorg-x11-xutils-dev
 BuildRequires:  pkgconfig(xorg-macros)
 BuildRequires:  pkgconfig(xproto)
+BuildRequires: pkgconfig(xfixes)
 BuildRequires: pkgconfig(inputproto) >= 2.1.99.6
 BuildRequires: libX11-devel >= 1.4.99.1
 BuildRequires: libXext-devel
